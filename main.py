@@ -2,7 +2,7 @@
 import os
 from discord.ext import commands
 
-startup_extensions = ["my_commands"]
+startup_extensions = ["cogs.calc", "cogs.conversation"]
 
 BOT_PREFIX = ('?', '!')
 bot = commands.Bot(command_prefix=BOT_PREFIX)
