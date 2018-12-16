@@ -2,13 +2,14 @@
 import os
 from discord.ext import commands
 
-startup_extensions = ["cogs.calc", "cogs.conversation"]
+startup_extensions = ["cogs.calc", "cogs.conversation", "cogs.remo"]
 
 BOT_PREFIX = ('?', '!')
 bot = commands.Bot(command_prefix=BOT_PREFIX)
 
+
 @bot.command()
-async def load(extension_name : str):
+async def load(extension_name: str):
     """Loads an extension."""
     try:
         bot.load_extension(extension_name)
@@ -17,12 +18,18 @@ async def load(extension_name : str):
         return
     await bot.say("{} loaded.".format(extension_name))
 
+
 @bot.event
 async def on_ready():
     print("以下のユーザー名でログインしています。")
     print("ユーザー名: " + bot.user.name)
-    print("ユーザーID: " + bot.user.id)
+    print("ユーザーID: " + str(bot.user.id))
     print("--------------------------------------")
+
+
+@bot.event
+async def on_resumed():
+    print('reconnected')
 
 if __name__ == "__main__":
     for extension in startup_extensions:
@@ -32,4 +39,4 @@ if __name__ == "__main__":
             exc = '{}: {}'.format(type(e).__name__, e)
             print('Failed to load extension {}\n{}'.format(extension, exc))
 
-    bot.run(os.environ.get("DISCORD_TOKEN"))
+    bot.run(os.environ.get("DISCORD_TOKEN"), reconnect=True)
