@@ -18,6 +18,9 @@ class Conversation():
             if "勉強した" in message.content:
                 mlist = ["えらい", "すっごーい", "えらみ", "えらさ"]
                 await message.channel.send(random.choice(mlist))
+            elif "した" in message.content:
+                mlist = ["なるほどですね…（良く分かってない）"]
+                await message.channel.send(random.choice(mlist))
         elif message.channel.name == "hello_bot":
             if "こんにちは" in message.content:
                 mlist = [
