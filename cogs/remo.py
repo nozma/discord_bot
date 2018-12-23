@@ -2,10 +2,8 @@
 from discord.ext import commands
 import requests
 import os
-import sqlite3
-import matplotlib.pyplot as plt
-import pandas as pd
 import discord
+import pyper
 
 
 class Remo():
@@ -37,19 +35,10 @@ class Remo():
     @commands.command(description="私の部屋の温湿度と明るさをプロットします。",
                       brief="温湿度と明るさのプロット")
     async def plottemp(ctx, self):
-        dbname = '/home/pi/db/remoData.db'
-        con = sqlite3.connect(dbname, detect_types=sqlite3.PARSE_DECLTYPES|sqlite3.PARSE_COLNAMES)
-        sqlite3.dbapi2.converters['DATETIME'] = sqlite3.dbapi2.converters['TIMESTAMP']
-        df = pd.read_sql_query('select * from remo;', con)
-
-        plt.plot(df['time'], df['temperature'])
-        plt.plot(df['time'], df['humidity'])
-        plt.plot(df['time'], df['illumination'])
-        plt.legend()
-        plt.savefig('/home/pi/image/temp.png')
-        plt.close()
+        r = pyper.R()
+        r("source(file='/home/rito/Programming/Python/discord_bot/cogs/plot.R')")
         await self.send("部屋の温湿度と明るさはこんな感じです。")
-        await self.send(file=discord.File('/home/pi/image/temp.png'))
+        await self.send(file=discord.File('/home/rito/image/plot.png'))
 
 
 def setup(bot):
